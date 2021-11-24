@@ -11,6 +11,8 @@ static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 use observable_react::ReactObservable;
 use observable_rs::Observable;
 
+use std::fmt;
+
 #[wasm_bindgen(start)]
 pub fn start() {
     log::set_logger(&wasm_bindgen_console_logger::DEFAULT_LOGGER).unwrap();
@@ -33,7 +35,45 @@ pub struct Universe {
     cells: Vec<Cell>,
 }
 
+impl fmt::Display for Universe {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        for line in self.cells.as_slice().chunks(self.width as usize) {
+            for &cell in line {
+                let symbol = if cell == Cell::Dead { '□' } else { '■' };
+                write!(f, "{}", symbol)?;
+            }
+            write!(f, "\n")?;
+        }
+        Ok(())
+    }
+}
+
+#[wasm_bindgen]
 impl Universe {
+    pub fn tick(&mut self) {
+        let mut next = self.cells.clone();
+
+        for row in 0..self.height {
+            for col in 0..self.width {
+                let idx = self.get_index(row, col);
+                let cell = self.cells[idx];
+                let live_neighbors = self.count_live_neightbors(row, col);
+
+                let next_cell = match (cell, live_neighbors) {
+                    (Cell::Alive, x) if x < 2 => Cell::Dead,
+                    (Cell::Alive, 2) | (Cell::Alive, 3) => Cell::Alive,
+                    (Cell::Alive, x) if x > 3 => Cell::Dead,
+                    (Cell::Dead, 3) => Cell::Alive,
+                    (otherwise, _) => otherwise,
+                };
+
+                next[idx] = next_cell;
+            }
+        }
+
+        self.cells = next;
+    }
+
     fn get_index(&self, row: u32, column: u32) -> usize {
         (row * self.width + column) as usize
     }
