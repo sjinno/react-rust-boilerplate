@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
-import("./my-rust-module-build").then((wasm) => {
+import("./wasm-game-of-life-build").then((wasm) => {
   ReactDOM.render(
     <React.StrictMode>
       <App wasm={wasm} />
