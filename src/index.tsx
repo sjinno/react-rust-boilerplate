@@ -1,15 +1,17 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import App from "./App";
-import reportWebVitals from "./reportWebVitals";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
+import reportWebVitals from './reportWebVitals';
+import GlobalStyles from './globalStyles';
 
-import("./wasm-game-of-life-build").then((wasm) => {
-  ReactDOM.render(
-    <React.StrictMode>
-      <App wasm={wasm} />
-    </React.StrictMode>,
-    document.getElementById("root")
-  );
+import('./wasm-game-of-life-build').then((wasm) => {
+    ReactDOM.render(
+        <React.StrictMode>
+            <GlobalStyles />
+            <App wasm={wasm} />
+        </React.StrictMode>,
+        document.getElementById('root'),
+    );
 });
 
 // If you want to start measuring performance in your app, pass a function
