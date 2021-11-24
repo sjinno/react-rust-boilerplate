@@ -12,6 +12,7 @@ function App({ wasm }: { wasm: any }) {
 
   return (
     <div className="App">
+      Hello, world!
       <button onClick={toggleShow}>
         {listVisible ? "Hide the list" : "Show the list"}
       </button>
