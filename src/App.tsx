@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 function App({ wasm }: { wasm: any }) {
   console.log(wasm);
   useEffect(() => {
-    const alertOnce = () => wasm.greet();
+    const alertOnce = () => wasm.greet("Oliver");
     alertOnce();
   }, [wasm]);
 
