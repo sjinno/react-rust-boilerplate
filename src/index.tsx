@@ -4,14 +4,20 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import GlobalStyles from './globalStyles';
 
-import('./wasm-game-of-life-build').then((wasm) => {
-    ReactDOM.render(
-        <React.StrictMode>
-            <GlobalStyles />
-            <App wasm={wasm} />
-        </React.StrictMode>,
-        document.getElementById('root'),
-    );
+const wasm = import('./wasm-game-of-life-build');
+const stuff = import('./wasm-game-of-life-build/index_bg.wasm');
+
+wasm.then((wasm) => {
+    stuff.then((stuff) => {
+        const { memory } = stuff;
+        ReactDOM.render(
+            <React.StrictMode>
+                <GlobalStyles />
+                <App wasm={wasm} memory={memory} />
+            </React.StrictMode>,
+            document.getElementById('root'),
+        );
+    });
 });
 
 // If you want to start measuring performance in your app, pass a function

@@ -1,20 +1,18 @@
-import React, { useState } from "react";
-import GameOfLife from "./components/GameOfLife";
+import React from 'react';
+import GameOfLife from './components/GameOfLife';
 
-function App({ wasm }: { wasm: any }) {
-  console.log(wasm);
+interface Props {
+    wasm: any;
+    memory: WebAssembly.Memory;
+}
 
-  // useEffect(() => {
-  //   const alertOnce = () => wasm.greet("Oliver");
-  //   alertOnce();
-  // }, [wasm]);
-
-  return (
-    <div className="App">
-      Hello, world!
-      <GameOfLife wasm={wasm} />
-    </div>
-  );
+function App({ wasm, memory }: Props) {
+    return (
+        <div className="App">
+            Hello, world!
+            <GameOfLife wasm={wasm} memory={memory} />
+        </div>
+    );
 }
 
 export default App;
